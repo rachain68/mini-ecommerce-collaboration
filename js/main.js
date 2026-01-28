@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     const productList = document.getElementById('product-list');
     const searchInput = document.getElementById('searchInput');
+    const loader = document.getElementById('loader');
     let allProducts = [];
+
+    // Show loader
+    loader.style.display = 'block';
 
     // Fetch products from JSON
     fetch('js/products.json')
@@ -9,7 +13,18 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             allProducts = data;
             displayProducts(allProducts);
+            // Hide loader after data is loaded
+            loader.style.display = 'none';
+        })
+        .catch(error => {
+            console.error('Error loading products:', error);
+            loader.textContent = 'เกิดข้อผิดพลาดในการโหลดข้อมูล';
         });
+
+    // ฟังก์ชันจัดรูปแบบราคาให้มี comma
+    function formatPrice(price) {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
 
     function displayProducts(products) {
         productList.innerHTML = ''; // Clear previous list
@@ -19,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.innerHTML = `
                 <img src="${product.image}" alt="${product.name}">
                 <h3>${product.name}</h3>
-                <p>ราคา: ${product.price} บาท</p>
+                <p>ราคา: ${formatPrice(product.price)} บาท</p>
             `;
             productList.appendChild(card);
         });
