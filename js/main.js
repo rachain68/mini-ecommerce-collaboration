@@ -46,10 +46,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+ main
     // ฟังก์ชันค้นหาสินค้า (เมื่อผู้ใช้พิมพ์ในช่องค้นหา)
     searchInput.addEventListener('keyup', () => {
         const searchTerm = searchInput.value.toLowerCase();
         // กรองสินค้าที่มีชื่อตรงกับคำค้นหา
+
+    // Improved Search with validation
+    searchInput.addEventListener('keyup', () => {
+        const searchTerm = searchInput.value.trim().toLowerCase();
+        
+        // Validation: If search is empty, show all products
+        if (searchTerm === '') {
+            displayProducts(allProducts);
+            return;
+        }
+        
+ feature/search-and-validation
         const filteredProducts = allProducts.filter(product => {
             return product.name.toLowerCase().includes(searchTerm);
         });
